@@ -85,3 +85,11 @@ Cleaning and validating filter data
 Preparing it for database storage
 
 Enabling dynamic, flexible filters without hardcoding
+
+
+**Next Actions**
+Add ONE report manually
+
+Add ONE page
+
+Add ONE filter

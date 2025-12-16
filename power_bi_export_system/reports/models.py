@@ -28,7 +28,7 @@ class Filter(models.Model):
     
 
 class Pages(models.Model):
-    report = models.ForeignKey(Report, on_delete=models.CASCADE, related_name='pages')
+    report = models.ForeignKey(Report, on_delete=models.CASCADE, related_name='page_objects')
     page_name = models.CharField(max_length=100)
     page_id = models.CharField(max_length=100)
     order = models.IntegerField(default=0)

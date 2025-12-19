@@ -4,7 +4,7 @@ from django.db import models
 class Report(models.Model):
     report_id = models.CharField(max_length=100, unique=True)
     title = models.CharField(max_length=200)
-    iframe_url = models.URLField()
+    iframe_url = models.TextField(max_length=400)
     pages = models.JSONField(default=list)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -24,7 +24,7 @@ class Filter(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"{self.name}: {self.value}"
+        return f"{self.filter_label.title}: {self.report.title}"
     
 
 class Pages(models.Model):

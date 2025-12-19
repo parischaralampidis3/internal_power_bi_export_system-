@@ -93,3 +93,60 @@ Add ONE report manually
 Add ONE page
 
 Add ONE filter
+
+
+**Database Architecture**
+
+┌─────────────────────────────────────────────────────┐
+│  Your FastAPI Code (routers/reports.py)            │
+│  db.query(Report).all()                            │
+└────────────────────┬────────────────────────────────┘
+                     │
+         ╔═══════════╩═══════════╗
+         ║   SQLAlchemy (ORM)    ║  ← Translates Python → SQL
+         ║  Converts queries      ║
+         ║  Maps results to objs  ║
+         ╚═══════════╦═══════════╝
+                     │
+┌────────────────────▼────────────────────────────────┐
+│  SQLite Database (db.sqlite3)                       │
+│  SELECT * FROM reports_report;                      │
+└─────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────┐
+│        Your FastAPI Route                │
+│  @router.get("/reports")                │
+│  def get_reports(db: Session = ...)     │
+└────────────────┬─────────────────────────┘
+                 │ Depends(get_db)
+                 ↓
+┌──────────────────────────────────────────┐
+│    database.py                           │
+│  1. Finds db.sqlite3                     │
+│  2. Creates engine (connection pool)    │
+│  3. Creates SessionLocal factory         │
+│  4. get_db() yields sessions to routes  │
+└────────────────┬─────────────────────────┘
+                 │
+                 ↓
+┌──────────────────────────────────────────┐
+│    Django's db.sqlite3                   │
+│  - reports_report table                  │
+│  - reports_filter table                  │
+│  - reports_pages table                   │
+└──────────────────────────────────────────┘
+
+
+FastAPI route calls get_db()
+   ↓
+2. get_db() creates: db = SessionLocal()
+   ↓
+3. get_db() yields db to the route
+   ↓
+4. Route runs and uses db to query the database
+   ↓
+5. Route finishes
+   ↓
+6. get_db() resumes and closes the database: db.close()
+   ↓
+7. Session is cleaned up, ready for next request

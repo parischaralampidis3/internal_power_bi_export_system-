@@ -150,3 +150,12 @@ FastAPI route calls get_db()
 6. get_db() resumes and closes the database: db.close()
    ↓
 7. Session is cleaned up, ready for next request
+
+**Script for start up db**
+
+from app.core.database import SessionLocal
+db = SessionLocal()
+try:
+    print(db.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall())
+finally:
+    db.close()

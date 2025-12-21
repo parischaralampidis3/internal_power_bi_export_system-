@@ -1,6 +1,6 @@
 from pathlib import Path
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 DATABASE_URL = f"sqlite:///{BASE_DIR}/power_bi_export_system/db.sqlite3"

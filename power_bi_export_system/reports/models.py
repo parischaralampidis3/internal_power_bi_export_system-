@@ -37,4 +37,4 @@ class Pages(models.Model):
     thumbnail_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
-        return self.page_name
+        return self.page_name 

@@ -8,7 +8,8 @@ router = APIRouter( prefix = "/reports", tags = ["Reports"] )
 @router.get("/")
 def get_reports(db: Session = Depends(get_db)):
 
-    rows = db.execute(text("SELECT report_id,title FROM reports")).fetchall()
+    # Django table name is `reports_report`; query that table instead of `reports`
+    rows = db.execute(text("SELECT report_id, title FROM reports_report")).fetchall()
     return {
         "reports": [      
         {"report_id": r[0], "title": r[1]}

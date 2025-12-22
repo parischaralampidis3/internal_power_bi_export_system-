@@ -9,15 +9,16 @@ router = APIRouter(prefix="/filters", tags=["Filters"])
 
 def get_filters(report_id: int, db:Session = Depends(get_db)):
     
-    rows = db.execute(text("""
-                        SELECT f.filter_label, f.column_name, f.allowed_values,f.default values
-                           FROM reports.filter f
-                           JOIN reports_report r ON f.report_id = r.id
-                           wHERE r.id = :report_id
-"""),
-{report_id:report_id}).fetchall()
-    
-    return {"filters": [
+        rows = db.execute(text("""
+                                                SELECT f.filter_label, f.column_name, f.allowed_values, f.default_values
+                                                    FROM reports_filter f
+                                                    JOIN reports_report r ON f.report_id = r.id
+                                                    WHERE r.id = :report_id
+        """),
+        {"report_id": report_id}).fetchall()
+
+        return {
+            "filters": [
         { 
             "filter_label":r[0],
             "column_name":r[1],

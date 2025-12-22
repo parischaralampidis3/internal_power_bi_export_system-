@@ -159,3 +159,74 @@ try:
     print(db.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall())
 finally:
     db.close()
+
+
+***Specific Topics***
+---------------------
+
+**How db is attached to routes**
+Why dependency injection matters
+
+FastAPI:
+
+tracks lifecycle per request
+
+isolates concurrent requests
+
+avoids shared state
+
+This is not optional in real systems.
+
+----------------------------------
+db: Session
+This is:
+
+a DB connection manager
+
+a transaction boundary
+
+a cursor provider
+
+----------------------------------
+text("SELECT report_id, title FROM reports_report")
+Why required?
+
+Because SQLAlchemy:
+
+must distinguish SQL from Python strings
+
+validates parameters
+
+prevents SQL injection
+
+----------------------------------
+
+Threading & Concurrency (CRITICAL)
+
+When 100 users hit /api/reports:
+
+Each request gets:
+
+its own DB session
+
+its own transaction
+
+Sessions are never shared
+
+SQLite threading is respected
+
+---------------------------------
+
+The Pattern (Memorize This)
+SQL → rows → loop → dicts → JSON
+
+
+You will repeat this pattern in:
+
+/reports
+
+/pages/{report_id}
+
+/filters/{report_id}
+
+---------------------------------

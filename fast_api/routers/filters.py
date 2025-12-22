@@ -2,18 +2,19 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from app.core.database import get_db
+from ..schemas.filters import FiltersResponse
 
 router = APIRouter(prefix="/filters", tags=["Filters"])
 
-@router.get("/{report_id}")
+@router.get("/{report_id}",response_model= FiltersResponse)
 
-def get_filters(report_id: int, db:Session = Depends(get_db)):
+def get_filters(report_id: str, db:Session = Depends(get_db)):
     
         rows = db.execute(text("""
                                                 SELECT f.filter_label, f.column_name, f.allowed_values, f.default_values
                                                     FROM reports_filter f
                                                     JOIN reports_report r ON f.report_id = r.id
-                                                    WHERE r.id = :report_id
+                                                    WHERE r.report_id = :report_id
         """),
         {"report_id": report_id}).fetchall()
 

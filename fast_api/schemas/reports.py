@@ -6,4 +6,4 @@ class ReportOut(BaseModel):
     title: str
 
 class ReportsResponse(BaseModel):
-    reports: list[ReportOut]
+    reports: List[ReportOut]

@@ -230,3 +230,76 @@ You will repeat this pattern in:
 /filters/{report_id}
 
 ---------------------------------
+**Apply smoke tests**
+------------------------
+
+# start FastAPI (from fast_api/)
+uvicorn main:app --reload --port 8001
+
+# request filters for report 1
+curl http://127.0.0.1:8001/api/filters/1
+
+# request pages for report 1 
+curl http://127.0.0.1:8001/api/pages/1
+
+# start FastAPI (if not already)
+uvicorn main:app --reload --port 8001
+
+# request the endpoint
+curl http://127.0.0.1:8001/api/reports/
+
+
+
+
+
+----------------------------------------
+***IMPORTANT: Freeze the API Contract (Do This Now)***
+
+Importance of API Contracts in System Design
+API contracts play a crucial role in system design, providing a clear and formalized definition of the interactions between different components of a system. Here are some key reasons why API contracts are important:
+
+1. Clarity & Consistency
+
+Clear Specs: Define endpoints, parameters, responses, and errors clearly for a shared understanding.
+Consistency: Ensure uniform behavior across versions and implementations.
+2. Parallel Development
+
+Team Collaboration: Frontend and backend teams can work independently using the contract.
+Fewer Dependencies: Reduces the need for teams to wait on each other.
+3. Interoperability
+
+Standardization: Encourages common protocols and data formats.
+Easy Integration: Simplifies connecting with third-party or external systems.
+4. Testing & Validation
+
+Automated Testing: Validates that APIs follow the contract.
+Mocking: Enables early testing with mock APIs.
+5. Error Handling & Reliability
+
+Defined Errors: Clear error formats help clients handle issues better.
+Better Reliability: Prevents miscommunication and reduces system failures.
+
+Before moving forward, freeze your response shapes.
+
+Example (filters):
+
+{
+  "filters": [
+    {
+      "label": "Year",
+      "column": "year",
+      "allowed_values": [2022, 2023],
+      "default": 2023
+    }
+  ]
+}
+
+
+Why this matters:
+
+Frontend depends on this
+
+Export service depends on this
+
+Changing later causes bugs
+

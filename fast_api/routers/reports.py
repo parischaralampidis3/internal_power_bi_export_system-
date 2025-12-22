@@ -2,10 +2,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from app.core.database import get_db
+from ..schemas.reports import ReportsResponse
 
 router = APIRouter( prefix = "/reports", tags = ["Reports"] )
 
-@router.get("/")
+@router.get("/",response_model = ReportsResponse)
 def get_reports(db: Session = Depends(get_db)):
 
     # Django table name is `reports_report`; query that table instead of `reports`

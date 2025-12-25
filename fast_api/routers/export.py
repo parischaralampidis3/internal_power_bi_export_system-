@@ -13,3 +13,10 @@ def export_preview(payload: dict, db: Session = Depends(get_db)):
     page_id = payload.get("page_id")
     filters = payload.get("filters",{})
 
+    report = db.execute((text("""SELECT id, frame_url 
+                              FROM reports_report 
+                              WHERE report_id = :rid"""))), {"rid": report_id}.fetchone()
+    if not report:
+        raise HTTPException(status_code=404, detail = "Report not found")
+    
+    report_pk, iframe_url = report

@@ -153,7 +153,7 @@ FastAPI route calls get_db()
 
 **Script for start up db**
 
-from app.core.database import SessionLocal
+import app.core.database import SessionLocal
 db = SessionLocal()
 try:
     print(db.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall())

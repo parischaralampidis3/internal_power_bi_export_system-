@@ -7,4 +7,4 @@ class PageOut(BaseModel):
     is_default: bool
 
 class PagesResponse(BaseModel):
-    pages: list[PageOut]
+    pages: List[PageOut]

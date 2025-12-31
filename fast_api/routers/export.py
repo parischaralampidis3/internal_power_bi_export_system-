@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends,HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from app.core.database import get_db
+from fast_api.app.core.database import get_db
 
 router = APIRouter( prefix = "/export", tags = ["Export"])
 
-@router.post("/preview", status_code=202)
+@router.post("/preview", status_code=200)
 
 def export_preview(payload: dict, db: Session = Depends(get_db)):
 
@@ -34,6 +34,8 @@ def export_preview(payload: dict, db: Session = Depends(get_db)):
             status_code=404, 
             detail = "Report not found"
             )
+    
+    report_pk, iframe_url = report
         
     # Validate page belongs to report
 

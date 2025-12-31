@@ -1,8 +1,8 @@
 from fastapi import APIRouter,Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from app.core.database import get_db
-from ..schemas.pages import PagesResponse
+from fast_api.app.core.database import get_db
+from fast_api.schemas.pages import PagesResponse
 
 router = APIRouter(prefix="/pages", tags=["Pages"])
 @router.get("/{report_id}",response_model = PagesResponse )

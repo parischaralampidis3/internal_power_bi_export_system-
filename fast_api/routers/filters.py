@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from app.core.database import get_db
-from ..schemas.filters import FiltersResponse
+from fast_api.app.core.database import get_db
+from fast_api.schemas.filters import FiltersResponse
 
 router = APIRouter(prefix="/filters", tags=["Filters"])
 

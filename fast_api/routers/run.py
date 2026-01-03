@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from fast_api.app.core.database import get_db
 
-router = APIRouter( prefix = '/run', tags=['Run'] )
+router = APIRouter(prefix = '/export', tags=['Export'])
 
 router.post('/run', status_code=200)
 
@@ -21,7 +21,45 @@ def export_run(payload: dict, db: Session = Depends(get_db)):
     
 
     #validate report exists
-
     report = db.execute(text("""
+                    SELECT id, iframe_url 
+                    FROM reports_report
+                    WHERE report_id = :rid
+              """),
+              {"rid": report_id}
+              ).fetchone()
+    
+    if not report:
+        raise HTTPException(
+            status_code = 404,
+            detail = "Report not found"
+        )
+    
+    report_pk, iframe_url = report
 
-              """))
+    # Validate pages
+    page = db.execute(text("""
+                    SELECT page_id FROM reports_pages
+                    WHERE report_id = :pk and page_id = :page
+                    """),
+                    {"pk": report_id , "page": page_id}
+                    ).fetchone()
+    if not page:
+        raise HTTPException(
+            status_code = 404, 
+            detail = "Page not found for this report."
+        )
+
+    #Validate filters
+    rows = db.execute(text("""
+                    SELECT column_name, allowed_values
+                    FROM reports_filters
+                    WHERE report_id = :pk
+                    """),
+                    {"pk": report_pk}
+                    ).fetchall()
+    allowed_filters = {r[0]: r[1]. split(",") for r in rows}
+
+    return{
+        
+    }

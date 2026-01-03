@@ -5,7 +5,7 @@ from fast_api.app.core.database import get_db
 
 router = APIRouter(prefix = '/export', tags=['Export'])
 
-router.post('/run', status_code=200)
+@router.post('/run', status_code=200)
 
 def export_run(payload: dict, db: Session = Depends(get_db)):
 
@@ -16,7 +16,7 @@ def export_run(payload: dict, db: Session = Depends(get_db)):
     if not report_id or not page_id:
         raise HTTPException(
             status_code = 400,
-            detail = "eport_id and page_id are required."
+            detail = "report_id and page_id are required."
         )
     
 
@@ -60,6 +60,18 @@ def export_run(payload: dict, db: Session = Depends(get_db)):
                     ).fetchall()
     allowed_filters = {r[0]: r[1]. split(",") for r in rows}
 
-    return{
-        
+    for k, v in filters.items():
+        if k in allowed_filters and str(v) not in allowed_filters[k]:
+            raise HTTPException(
+                status_code = 400,
+                detail = f"invalid value for filter {k}"
+            )
+
+    #generate export png, pdf
+
+    return {
+        "message": "Export started successfully.",
+        "report_id": report_id,
+        "page_id": page_id,
+        "filters": filters
     }

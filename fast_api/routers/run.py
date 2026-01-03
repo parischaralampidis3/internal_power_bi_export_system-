@@ -18,7 +18,6 @@ def export_run(payload: dict, db: Session = Depends(get_db)):
             status_code = 400,
             detail = "report_id and page_id are required."
         )
-    
 
     #validate report exists
     report = db.execute(text("""

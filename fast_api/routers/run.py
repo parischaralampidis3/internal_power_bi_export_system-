@@ -52,12 +52,12 @@ def export_run(payload: dict, db: Session = Depends(get_db)):
     #Validate filters
     rows = db.execute(text("""
                     SELECT column_name, allowed_values
-                    FROM reports_filters
+                    FROM reports_filter
                     WHERE report_id = :pk
                     """),
                     {"pk": report_pk}
                     ).fetchall()
-    allowed_filters = {r[0]: r[1]. split(",") for r in rows}
+    allowed_filters = {r[0]: r[1] for r in rows}
 
     for k, v in filters.items():
         if k in allowed_filters and str(v) not in allowed_filters[k]:

@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends,HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from fast_api.app.core.database import get_db
+from fast_api.app.utils.export_png import export_png_from_iframe
+
 
 router = APIRouter(prefix = '/export', tags=['Export'])
 
@@ -65,7 +67,23 @@ def export_run(payload: dict, db: Session = Depends(get_db)):
                 status_code = 400,
                 detail = f"invalid value for filter {k}"
             )
+        
+    #Export png
 
+        output_file = f"exports/{report_id}_{page_id}.png"
+    
+        export_png_from_iframe(
+            iframe_url = iframe_url,
+            output_path = output_file
+        )
+    
+  
+        return{
+            "message": "Export Completed Successfully",
+            "file": output_file
+        }
+
+  
     #generate export png, pdf
 
     return {
@@ -74,3 +92,5 @@ def export_run(payload: dict, db: Session = Depends(get_db)):
         "page_id": page_id,
         "filters": filters
     }
+
+

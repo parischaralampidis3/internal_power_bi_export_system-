@@ -41,7 +41,7 @@ def export_run(payload: dict, db: Session = Depends(get_db)):
                     SELECT page_id FROM reports_pages
                     WHERE report_id = :pk and page_id = :page
                     """),
-                    {"pk": report_id , "page": page_id}
+                    {"pk": report_pk , "page": page_id}
                     ).fetchone()
     if not page:
         raise HTTPException(

@@ -21,10 +21,9 @@ def export_png_from_iframe(iframe_url: str, output_path:str, wait_seconds: int =
 
         page.wait_for_timeout(5000)  # wait for 5 seconds to ensure content is loaded
 
-        page.pdf(
-            path=output_path,
-            format = "A4",
-            print_background=True
+        page.screenshot(
+        path = output_path,
+        full_page=True
         )
         browser.close()
     

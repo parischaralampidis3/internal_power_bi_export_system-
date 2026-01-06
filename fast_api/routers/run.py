@@ -9,8 +9,8 @@ router = APIRouter(prefix = '/export', tags=['Export'])
 
 @router.post('/run', status_code=200)
 
-def export_run(payload: dict, db: Session = Depends(get_db)):
-
+def export_run(payload: dict, db: Session = Depends(get_db)):   
+    
     report_id = payload.get("report_id")
     page_id = payload.get("page_id")
     filters = payload.get("filters",{})
@@ -59,6 +59,7 @@ def export_run(payload: dict, db: Session = Depends(get_db)):
                     """),
                     {"pk": report_pk}
                     ).fetchall()
+    
     allowed_filters = {r[0]: r[1] for r in rows}
 
     for k, v in filters.items():
@@ -67,30 +68,19 @@ def export_run(payload: dict, db: Session = Depends(get_db)):
                 status_code = 400,
                 detail = f"invalid value for filter {k}"
             )
-        
-    #Export png
-
-        output_file = f"exports/{report_id}_{page_id}.png"
     
-        export_png_from_iframe(
+ #Export png
+    
+    export_png_from_iframe(
             iframe_url = iframe_url,
             output_path = output_file
         )
+
+    output_file = f"exports/{report_id}_{page_id}.png"
     
-  
-        return{
+    
+    return{
             "message": "Export Completed Successfully",
             "file": output_file
-        }
-
-  
-    #generate export png, pdf
-
-    return {
-        "message": "Export started successfully.",
-        "report_id": report_id,
-        "page_id": page_id,
-        "filters": filters
     }
-
 

@@ -31,6 +31,11 @@ class Pages(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE, related_name='page_objects')
     page_name = models.CharField(max_length=100)
     page_id = models.CharField(max_length=100)
+    powerbi_page_name = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True
+    )
     order = models.IntegerField(default=0)
     is_default = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
